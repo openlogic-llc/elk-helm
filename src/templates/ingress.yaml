@@ -35,14 +35,5 @@ spec:
           serviceName: {{$.Values.kibana.services.http.name}}
           servicePort: 9200
   {{- end}}
-  tls:
-  - hosts:
-      {{- if $.Values.ingress.elasticsearch.host }}
-      - {{$.Values.ingress.elasticsearch.host}}
-      {{- end}}
-      {{- if $.Values.ingress.kibana.host }}
-      - {{$.Values.ingress.kibana.host}}
-      {{- end}}
-    secretName: elasticsearch-cert
 {{- end }}
 {{- end }}
