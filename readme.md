@@ -1,0 +1,1 @@
+### Helm chart for an Elasticsearch/Beats/Kibana group.
