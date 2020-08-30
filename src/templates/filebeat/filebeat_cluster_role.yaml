@@ -3,6 +3,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: filebeat
+  namespace: {{$.Values.cluster.namespace}}
   labels:
     k8s-app: filebeat
 rules:
