@@ -20,9 +20,15 @@ spec:
   keyEncoding: pkcs1
   commonName: elastic
   dnsNames:
+    {{- if $.Values.ingress.elasticsearch.host }}
+    - {{$.Values.ingress.elasticsearch.host}}
+    {{- end}}
     - {{$.Values.elasticsearch.services.http.name}}
     - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc
     - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+    {{- if $.Values.ingress.kibana.host }}
+    - {{$.Values.ingress.kibana.host}}
+    {{- end}}
     - {{$.Values.kibana.services.http.name}}
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
@@ -54,9 +60,15 @@ spec:
   keyEncoding: pkcs1
   commonName: elastic
   dnsNames:
+    {{- if $.Values.ingress.elasticsearch.host }}
+    - {{$.Values.ingress.elasticsearch.host}}
+    {{- end}}
     - {{$.Values.elasticsearch.services.http.name}}
     - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc
     - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+    {{- if $.Values.ingress.kibana.host }}
+    - {{$.Values.ingress.kibana.host}}
+    {{- end}}
     - {{$.Values.kibana.services.http.name}}
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local

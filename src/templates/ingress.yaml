@@ -1,3 +1,5 @@
+{{- if $.Values.ingress }}
+{{with $.Values.ingress }}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -9,6 +11,7 @@ metadata:
     cert-manager.io/issuer: "selfsigned-issuer"
 spec:
   rules:
+  {{- if $.Values.ingress.elasticsearch.host }}
   - host: {{$.Values.ingress.elasticsearch.host}}
     http:
       paths:
@@ -16,6 +19,8 @@ spec:
         backend:
           serviceName: {{$.Values.elasticsearch.services.http.name}}
           servicePort: 9200
+  {{- end}}
+  {{- if $.Values.ingress.kibana.host }}
   - host: {{$.Values.ingress.kibana.host}}
     http:
       paths:
@@ -23,5 +28,8 @@ spec:
         backend:
           serviceName: {{$.Values.kibana.services.http.name}}
           servicePort: 9200
+  {{- end}}
   tls:
   - secretName: elasticsearch-cert
+{{- end }}
+{{- end }}
