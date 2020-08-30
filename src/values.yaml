@@ -1,3 +1,11 @@
+sa.password = GtYFJDftCpe7kFAK
+cluster.certificate.issuer = 
+cluster.certificate.cluster_issuer = letsencrypt-prod
+ingress.kibana.host = ty-kibana.openlogic.io
+cluster.namespace = elk-helm
+elasticsearch.master.storage.space = 5Gi
+kibana.services.http.name = https-kibana
+
 sa:
   username: elastic
   password: elastic
@@ -129,7 +137,7 @@ kibana:
       memory: 1Gi
   env:
   - name: LOGGING_VERBOSE
-    value: false
+    value: true
   - name: SERVER_HOST
     value: "0.0.0.0"
   - name: XPACK_SECURITY_ENABLED
