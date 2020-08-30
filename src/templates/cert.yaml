@@ -32,11 +32,15 @@ spec:
     - {{$.Values.kibana.services.http.name}}
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
-  issuerRef:
-    # kind: ClusterIssuer
-    # name: letsencrypt-staging
+  issuerRef:  
+    {{- if $.Values.cluster.certificate.cluster_issuer}}
+    kind: ClusterIssuer
+    name: {{$.Values.cluster.certificate.cluster_issuer}}
+    {{- end}}
+    {{- if $.Values.cluster.certificate.issuer}}
     kind: Issuer
-    name: selfsigned-issuer
+    name: {{$.Values.cluster.certificate.issuer}}
+    {{- end}}
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
@@ -73,7 +77,11 @@ spec:
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
   issuerRef:
-    # kind: ClusterIssuer
-    # name: letsencrypt-staging
+    {{- if $.Values.cluster.certificate.cluster_issuer}}
+    kind: ClusterIssuer
+    name: {{$.Values.cluster.certificate.cluster_issuer}}
+    {{- end}}
+    {{- if $.Values.cluster.certificate.issuer}}
     kind: Issuer
-    name: ca-issuer
+    name: {{$.Values.cluster.certificate.issuer}}
+    {{- end}}
