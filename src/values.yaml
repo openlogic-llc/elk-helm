@@ -4,9 +4,9 @@ sa:
 
 ingress:
   elasticsearch:
-    host: elastic.okstovall.com
+    host: 
   kibana:
-    host: kibana.okstovall.com
+    host: 
 
 cluster:
   name: sample-cluster
