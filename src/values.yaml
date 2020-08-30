@@ -4,6 +4,7 @@ sa:
 
 ingress:
   certificate-issuer: selfsigned-issuer
+  certificate-cluster-issuer: 
   elasticsearch:
     host: 
   kibana:
