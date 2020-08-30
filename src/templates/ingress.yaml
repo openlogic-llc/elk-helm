@@ -33,7 +33,7 @@ spec:
       - path: /
         backend:
           serviceName: {{$.Values.kibana.services.http.name}}
-          servicePort: 9200
+          servicePort: 5601
   {{- end}}
 {{- end }}
 {{- end }}
