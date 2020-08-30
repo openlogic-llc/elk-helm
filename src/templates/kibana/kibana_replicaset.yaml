@@ -41,6 +41,12 @@ spec:
             {{- end}}
           {{- end }}
           env:
+          - name: ELASTICSEARCH_HOSTS
+            value: https://{{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local:9200
+          - name: ELASTICSEARCH_USERNAME
+            value: {{$.Values.sa.username}}
+          - name: ELASTICSEARCH_PASSWORD
+            value: {{$.Values.sa.password}}
           {{- range .env}}        
           - name: {{.name}}
             value: '{{.value}}'

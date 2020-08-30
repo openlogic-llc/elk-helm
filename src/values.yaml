@@ -86,8 +86,6 @@ elasticsearch:
       value: /usr/share/elasticsearch/config/certificates/tls.crt
     - name: xpack.security.transport.ssl.key
       value: /usr/share/elasticsearch/config/certificates/tls.key
-    - name: ELASTIC_PASSWORD
-      value: elastic
     - name: xpack.license.self_generated.type
       value: basic
     - name: xpack.monitoring.collection.enabled
@@ -129,12 +127,6 @@ kibana:
   env:
   - name: LOGGING_VERBOSE
     value: false
-  - name: ELASTICSEARCH_HOSTS
-    value: https://elasticsearch-http.default.svc.cluster.local:9200
-  - name: ELASTICSEARCH_USERNAME
-    value: elastic
-  - name: ELASTICSEARCH_PASSWORD
-    value: elastic
   - name: XPACK_SECURITY_ENABLED
     value: true
   - name: XPACK_SECURITY_ENCRYPTIONKEY

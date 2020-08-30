@@ -35,6 +35,8 @@ spec:
       env:
       - name: cluster.name
         value: {{ $.Values.cluster.name }}
+      - name: ELASTIC_PASSWORD
+        value: {{$.Values.sa.password}}
       {{- range .env}}        
       - name: {{.name}}
         value: '{{.value}}'

@@ -20,12 +20,12 @@ spec:
   keyEncoding: pkcs1
   commonName: elastic
   dnsNames:
-    - elasticsearch-http
-    - elasticsearch-http.default.svc
-    - elasticsearch-http.default.svc.cluster.local
-    - kibana-http
-    - kibana-http.default.svc
-    - kibana-http.default.svc.cluster.local
+    - {{$.Values.elasticsearch.services.http.name}}
+    - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc
+    - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+    - {{$.Values.kibana.services.http.name}}
+    - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
+    - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
   issuerRef:
     # kind: ClusterIssuer
     # name: letsencrypt-staging
@@ -54,12 +54,12 @@ spec:
   keyEncoding: pkcs1
   commonName: elastic
   dnsNames:
-    - elasticsearch-http
-    - elasticsearch-http.default.svc
-    - elasticsearch-http.default.svc.cluster.local
-    - kibana-http
-    - kibana-http.default.svc
-    - kibana-http.default.svc.cluster.local
+    - {{$.Values.elasticsearch.services.http.name}}
+    - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc
+    - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+    - {{$.Values.kibana.services.http.name}}
+    - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
+    - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
   issuerRef:
     # kind: ClusterIssuer
     # name: letsencrypt-staging
