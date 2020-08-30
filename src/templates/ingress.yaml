@@ -8,11 +8,11 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/rule-type: PathPrefix
     traefik.ingress.kubernetes.io/ssl-redirect: "true"
-    {{- if .certificate-issuer}}
-    cert-manager.io/issuer: {{.certificate-issuer}}
+    {{- if .certificate_issuer}}
+    cert-manager.io/issuer: {{.certificate_issuer}}
     {{- end}}
-    {{- if .certificate-cluster-issuer}}
-    cert-manager.io/cluster-issuer: {{.certificate-cluster-issuer}}
+    {{- if .certificate_cluster_issuer}}
+    cert-manager.io/cluster-issuer: {{.certificate_cluster_issuer}}
     {{- end}}
 spec:
   rules:

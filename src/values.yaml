@@ -3,8 +3,8 @@ sa:
   password: elastic
 
 ingress:
-  certificate-issuer: selfsigned-issuer
-  certificate-cluster-issuer: 
+  certificate_issuer: selfsigned-issuer
+  certificate_cluster_issuer: 
   elasticsearch:
     host: 
   kibana:
