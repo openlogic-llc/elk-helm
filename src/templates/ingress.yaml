@@ -9,11 +9,11 @@ metadata:
     traefik.ingress.kubernetes.io/rule-type: PathPrefix
     traefik.ingress.kubernetes.io/ssl-redirect: "true"
     ingress.kubernetes.io/protocol: https
-    {{- if .certificate_issuer}}
-    cert-manager.io/issuer: {{.certificate_issuer}}
+    {{- if $.Values.cluster.certificate.issuer}}
+    cert-manager.io/issuer: {{$.Values.cluster.certificate.issuer}}
     {{- end}}
-    {{- if .certificate_cluster_issuer}}
-    cert-manager.io/cluster-issuer: {{.certificate_cluster_issuer}}
+    {{- if $.Values.cluster.certificate.cluster_issuer}}
+    cert-manager.io/cluster-issuer: {{$.Values.cluster.certificate.cluster_issuer}}
     {{- end}}
 spec:
   rules:

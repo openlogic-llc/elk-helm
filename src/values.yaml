@@ -2,9 +2,7 @@ sa:
   username: elastic
   password: elastic
 
-ingress:
-  certificate_issuer: selfsigned-issuer
-  certificate_cluster_issuer: 
+ingress: 
   elasticsearch:
     host: 
   kibana:
@@ -14,6 +12,9 @@ cluster:
   name: sample-cluster
   namespace: default
   version: 7.9.0
+  certificate:
+    issuer: selfsigned-issuer
+    cluster_issuer:
 
 elasticsearch:
   image: docker.elastic.co/elasticsearch/elasticsearch
