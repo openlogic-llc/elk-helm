@@ -8,7 +8,9 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/rule-type: PathPrefix
     traefik.ingress.kubernetes.io/ssl-redirect: "true"
-    cert-manager.io/issuer: "selfsigned-issuer"
+    {{- if .certificate-issuer}}
+    cert-manager.io/issuer: {{.certificate-issuer}}
+    {{- end}}
 spec:
   rules:
   {{- if $.Values.ingress.elasticsearch.host }}
