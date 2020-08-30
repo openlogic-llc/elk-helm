@@ -77,11 +77,5 @@ spec:
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
   issuerRef:
-    {{- if $.Values.cluster.certificate.cluster_issuer}}
-    kind: ClusterIssuer
-    name: {{$.Values.cluster.certificate.cluster_issuer}}
-    {{- end}}
-    {{- if $.Values.cluster.certificate.issuer}}
     kind: Issuer
-    name: {{$.Values.cluster.certificate.issuer}}
-    {{- end}}
+    name: ca-issuer
