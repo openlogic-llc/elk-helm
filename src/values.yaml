@@ -130,6 +130,8 @@ kibana:
   env:
   - name: LOGGING_VERBOSE
     value: false
+  - name: SERVER_HOST
+    value: "0.0.0.0"
   - name: XPACK_SECURITY_ENABLED
     value: true
   - name: XPACK_SECURITY_ENCRYPTIONKEY
