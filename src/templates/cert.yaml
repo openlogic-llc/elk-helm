@@ -1,9 +1,8 @@
----
 apiVersion: cert-manager.io/v1alpha2
-kind: Issuer
+kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
-  namespace: {{$.Values.cluster.namespace}}
+  namespace: default
 spec:
   selfSigned: {}
 ---
@@ -11,7 +10,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: elasticsearch-cert-ca
-  namespace: {{$.Values.cluster.namespace}}
+  namespace: default
 spec:
   secretName: elasticsearch-cert-ca
   isCA: true
@@ -20,33 +19,24 @@ spec:
   keyEncoding: pkcs1
   commonName: elastic
   dnsNames:
-    {{- if $.Values.ingress.elasticsearch.host }}
-    - {{$.Values.ingress.elasticsearch.host}}
-    {{- end}}
-    - {{$.Values.elasticsearch.services.http.name}}
-    - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc
-    - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
-    {{- if $.Values.ingress.kibana.host }}
-    - {{$.Values.ingress.kibana.host}}
-    {{- end}}
-    - {{$.Values.kibana.services.http.name}}
-    - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
-    - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
-  issuerRef:  
-    {{- if $.Values.cluster.certificate.cluster_issuer}}
+    - ty-elastic.openlogic.io
+    - elastic-http
+    - elastic-http.default.svc
+    - elastic-http.default.svc.cluster.local
+    - ty-kibana.openlogic.io
+    - kibana-http
+    - kibana-http.default.svc
+    - kibana-http.default.svc.cluster.local
+  issuerRef:      
     kind: ClusterIssuer
-    name: {{$.Values.cluster.certificate.cluster_issuer}}
-    {{- end}}
-    {{- if $.Values.cluster.certificate.issuer}}
-    kind: Issuer
-    name: {{$.Values.cluster.certificate.issuer}}
-    {{- end}}
+    name: selfsigned-issuer
+    # name: letsencrypt-prod
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata: 
   name: ca-issuer
-  namespace: {{$.Values.cluster.namespace}}
+  namespace: default
 spec:
   ca:
     secretName: elasticsearch-cert-ca
@@ -55,7 +45,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: elasticsearch-cert
-  namespace: {{$.Values.cluster.namespace}}
+  namespace: default
 spec:
   secretName: elasticsearch-cert
   isCA: false
@@ -64,18 +54,96 @@ spec:
   keyEncoding: pkcs1
   commonName: elastic
   dnsNames:
-    {{- if $.Values.ingress.elasticsearch.host }}
-    - {{$.Values.ingress.elasticsearch.host}}
-    {{- end}}
-    - {{$.Values.elasticsearch.services.http.name}}
-    - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc
-    - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
-    {{- if $.Values.ingress.kibana.host }}
-    - {{$.Values.ingress.kibana.host}}
-    {{- end}}
-    - {{$.Values.kibana.services.http.name}}
-    - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
-    - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+    - ty-elastic.openlogic.io
+    - elastic-http
+    - elastic-http.default.svc
+    - elastic-http.default.svc.cluster.local
+    - ty-kibana.openlogic.io
+    - kibana-http
+    - kibana-http.default.svc
+    - kibana-http.default.svc.cluster.local
   issuerRef:
     kind: Issuer
     name: ca-issuer
+
+# ---
+# apiVersion: cert-manager.io/v1alpha2
+# kind: Issuer
+# metadata:
+#   name: selfsigned-issuer
+#   namespace: {{$.Values.cluster.namespace}}
+# spec:
+#   selfSigned: {}
+# ---
+# apiVersion: cert-manager.io/v1alpha2
+# kind: Certificate
+# metadata:
+#   name: elasticsearch-cert-ca
+#   namespace: {{$.Values.cluster.namespace}}
+# spec:
+#   secretName: elasticsearch-cert-ca
+#   isCA: true
+#   keySize: 2048
+#   keyAlgorithm: rsa
+#   keyEncoding: pkcs1
+#   commonName: elastic
+#   dnsNames:
+#     {{- if $.Values.ingress.elasticsearch.host }}
+#     - {{$.Values.ingress.elasticsearch.host}}
+#     {{- end}}
+#     - {{$.Values.elasticsearch.services.http.name}}
+#     - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc
+#     - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+#     {{- if $.Values.ingress.kibana.host }}
+#     - {{$.Values.ingress.kibana.host}}
+#     {{- end}}
+#     - {{$.Values.kibana.services.http.name}}
+#     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
+#     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+#   issuerRef:  
+#     {{- if $.Values.cluster.certificate.cluster_issuer}}
+#     kind: ClusterIssuer
+#     name: {{$.Values.cluster.certificate.cluster_issuer}}
+#     {{- end}}
+#     {{- if $.Values.cluster.certificate.issuer}}
+#     kind: Issuer
+#     name: {{$.Values.cluster.certificate.issuer}}
+#     {{- end}}
+# ---
+# apiVersion: cert-manager.io/v1alpha2
+# kind: Issuer
+# metadata: 
+#   name: ca-issuer
+#   namespace: {{$.Values.cluster.namespace}}
+# spec:
+#   ca:
+#     secretName: elasticsearch-cert-ca
+# ---
+# apiVersion: cert-manager.io/v1alpha2
+# kind: Certificate
+# metadata:
+#   name: elasticsearch-cert
+#   namespace: {{$.Values.cluster.namespace}}
+# spec:
+#   secretName: elasticsearch-cert
+#   isCA: false
+#   keySize: 2048
+#   keyAlgorithm: rsa
+#   keyEncoding: pkcs1
+#   commonName: elastic
+#   dnsNames:
+#     {{- if $.Values.ingress.elasticsearch.host }}
+#     - {{$.Values.ingress.elasticsearch.host}}
+#     {{- end}}
+#     - {{$.Values.elasticsearch.services.http.name}}
+#     - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc
+#     - {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+#     {{- if $.Values.ingress.kibana.host }}
+#     - {{$.Values.ingress.kibana.host}}
+#     {{- end}}
+#     - {{$.Values.kibana.services.http.name}}
+#     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc
+#     - {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+#   issuerRef:
+#     kind: Issuer
+#     name: ca-issuer

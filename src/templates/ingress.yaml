@@ -9,31 +9,27 @@ metadata:
     traefik.ingress.kubernetes.io/rule-type: PathPrefix
     traefik.ingress.kubernetes.io/ssl-redirect: "true"
     ingress.kubernetes.io/protocol: https
-    {{- if $.Values.cluster.certificate.issuer}}
-    cert-manager.io/issuer: {{$.Values.cluster.certificate.issuer}}
-    {{- end}}
-    {{- if $.Values.cluster.certificate.cluster_issuer}}
-    cert-manager.io/cluster-issuer: {{$.Values.cluster.certificate.cluster_issuer}}
-    {{- end}}
 spec:
   rules:
-  {{- if $.Values.ingress.elasticsearch.host }}
-  - host: {{$.Values.ingress.elasticsearch.host}}
+  # {{- if $.Values.ingress.elasticsearch.host }}
+  # - host: {{$.Values.ingress.elasticsearch.host}}
+  - host: ty-elastic.openlogic.io
     http:
       paths:
       - path: /
         backend:
           serviceName: {{$.Values.elasticsearch.services.http.name}}
           servicePort: 9200
-  {{- end}}
-  {{- if $.Values.ingress.kibana.host }}
-  - host: {{$.Values.ingress.kibana.host}}
+  # {{- end}}
+  # {{- if $.Values.ingress.kibana.host }}
+  # - host: {{$.Values.ingress.kibana.host}}
+  - host: ty-kibana.openlogic.io
     http:
       paths:
       - path: /
         backend:
           serviceName: {{$.Values.kibana.services.http.name}}
           servicePort: 5601
-  {{- end}}
+  # {{- end}}
 {{- end }}
 {{- end }}
