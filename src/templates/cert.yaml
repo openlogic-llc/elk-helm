@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
-  namespace: default
+  namespace: elk-helm
 spec:
   selfSigned: {}
 ---
@@ -10,7 +10,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: elasticsearch-cert-ca
-  namespace: default
+  namespace: elk-helm
 spec:
   secretName: elasticsearch-cert-ca
   isCA: true
@@ -21,12 +21,12 @@ spec:
   dnsNames:
     - ty-elastic.openlogic.io
     - elastic-http
-    - elastic-http.default.svc
-    - elastic-http.default.svc.cluster.local
+    - elastic-http.elk-helm.svc
+    - elastic-http.elk-helm.svc.cluster.local
     - ty-kibana.openlogic.io
     - kibana-http
-    - kibana-http.default.svc
-    - kibana-http.default.svc.cluster.local
+    - kibana-http.elk-helm.svc
+    - kibana-http.elk-helm.svc.cluster.local
   issuerRef:      
     kind: ClusterIssuer
     name: selfsigned-issuer
@@ -36,7 +36,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata: 
   name: ca-issuer
-  namespace: default
+  namespace: elk-helm
 spec:
   ca:
     secretName: elasticsearch-cert-ca
@@ -45,7 +45,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: elasticsearch-cert
-  namespace: default
+  namespace: elk-helm
 spec:
   secretName: elasticsearch-cert
   isCA: false
@@ -56,12 +56,12 @@ spec:
   dnsNames:
     - ty-elastic.openlogic.io
     - elastic-http
-    - elastic-http.default.svc
-    - elastic-http.default.svc.cluster.local
+    - elastic-http.elk-helm.svc
+    - elastic-http.elk-helm.svc.cluster.local
     - ty-kibana.openlogic.io
     - kibana-http
-    - kibana-http.default.svc
-    - kibana-http.default.svc.cluster.local
+    - kibana-http.elk-helm.svc
+    - kibana-http.elk-helm.svc.cluster.local
   issuerRef:
     kind: Issuer
     name: ca-issuer
