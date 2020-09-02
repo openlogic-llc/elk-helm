@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
-  namespace: default
+  namespace: {{$.Values.cluster.namespace}}
 spec:
   selfSigned: {}
 ---
@@ -10,7 +10,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: elasticsearch-cert-ca
-  namespace: default
+  namespace: {{$.Values.cluster.namespace}}
 spec:
   secretName: elasticsearch-cert-ca
   isCA: true
@@ -38,7 +38,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata: 
   name: ca-issuer
-  namespace: default
+  namespace: {{$.Values.cluster.namespace}}
 spec:
   ca:
     secretName: elasticsearch-cert-ca
@@ -47,7 +47,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: elasticsearch-cert
-  namespace: default
+  namespace: {{$.Values.cluster.namespace}}
 spec:
   secretName: elasticsearch-cert
   isCA: false
