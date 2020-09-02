@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
-  namespace: elk-helm
+  namespace: default
 spec:
   selfSigned: {}
 ---
@@ -10,7 +10,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: elasticsearch-cert-ca
-  namespace: elk-helm
+  namespace: default
 spec:
   secretName: elasticsearch-cert-ca
   isCA: true
@@ -19,24 +19,26 @@ spec:
   keyEncoding: pkcs1
   commonName: elastic
   dnsNames:
-    - ty-elastic.openlogic.io
+    # - ty-elastic.openlogic.io
+    - elastic.okstovall.com
     - elastic-http
-    - elastic-http.elk-helm.svc
-    - elastic-http.elk-helm.svc.cluster.local
-    - ty-kibana.openlogic.io
+    - elastic-http.default.svc
+    - elastic-http.default.svc.cluster.local
+    # - ty-kibana.openlogic.io
+    - kibana.okstovall.com
     - kibana-http
-    - kibana-http.elk-helm.svc
-    - kibana-http.elk-helm.svc.cluster.local
+    - kibana-http.default.svc
+    - kibana-http.default.svc.cluster.local
   issuerRef:      
     kind: ClusterIssuer
     name: selfsigned-issuer
-    # name: letsencrypt-prod
+    # name: letsencrypt-staging
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata: 
   name: ca-issuer
-  namespace: elk-helm
+  namespace: default
 spec:
   ca:
     secretName: elasticsearch-cert-ca
@@ -45,7 +47,7 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: elasticsearch-cert
-  namespace: elk-helm
+  namespace: default
 spec:
   secretName: elasticsearch-cert
   isCA: false
@@ -54,14 +56,16 @@ spec:
   keyEncoding: pkcs1
   commonName: elastic
   dnsNames:
-    - ty-elastic.openlogic.io
+    # - ty-elastic.openlogic.io
+    - elastic.okstovall.com
     - elastic-http
-    - elastic-http.elk-helm.svc
-    - elastic-http.elk-helm.svc.cluster.local
-    - ty-kibana.openlogic.io
+    - elastic-http.default.svc
+    - elastic-http.default.svc.cluster.local
+    # - ty-kibana.openlogic.io
+    - kibana.okstovall.com
     - kibana-http
-    - kibana-http.elk-helm.svc
-    - kibana-http.elk-helm.svc.cluster.local
+    - kibana-http.default.svc
+    - kibana-http.default.svc.cluster.local
   issuerRef:
     kind: Issuer
     name: ca-issuer
