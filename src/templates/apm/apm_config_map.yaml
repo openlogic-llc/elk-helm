@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apm-deployment-config
+  namespace: {{ $.Values.cluster.namespace }}
+  labels:
+    k8s-app: apm
+data:
+  apm-server.yml: |-
+    apm-server:
+      secret_token: {{ $.Values.apm.token }}
+      host: "0.0.0.0:8200"
+
+      ssl:
+        enabled: true
+        certificate: '/etc/pki/client/tls.crt'
+        key: '/etc/pki/client/tls.key'
+        certificate_authorities: ['/etc/pki/client/ca.crt']
+        client_authentication: "none"
+        
+      rum:
+        enabled: true
+
+      kibana:
+        enabled: true
+        host: https://{{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local:5601
+        protocol: https
+        username: {{$.Values.sa.username}}
+        password: {{$.Values.sa.password}}
+        ssl:
+          enabled: true
+          certificate: '/etc/pki/client/tls.crt'
+          key: '/etc/pki/client/tls.key'
+          certificate_authorities: ['/etc/pki/client/ca.crt']
+          verification_mode: none
+      
+    output:
+      elasticsearch:
+        hosts: [https://{{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local:9200]
+        protocol: https
+        username: {{$.Values.sa.username}}
+        password: {{$.Values.sa.password}}
+        ssl:
+          enabled: true
+          certificate: '/etc/pki/client/tls.crt'
+          key: '/etc/pki/client/tls.key'
+          certificate_authorities: ['/etc/pki/client/ca.crt']
+          verification_mode: none
+      
+    logging:
+      level: debug
+      selectors: ["*"]
+      metrics:
+        enabled: false
+      json: true
+      ecs: true
+    
+    monitoring:
+      enabled: true
+      elasticsearch:

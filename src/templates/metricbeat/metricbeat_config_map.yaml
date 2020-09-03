@@ -48,5 +48,6 @@ data:
       ssl.certificate_authorities: ["/etc/pki/client/ca.crt"]
       ssl.certificate: "/etc/pki/client/tls.crt"
       ssl.key: "/etc/pki/client/tls.key"  
+      ssl.verification_mode: none
       
 {{- end }}

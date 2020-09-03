@@ -13,8 +13,11 @@ spec:
       protocol: HTTPS
     tls:
       mode: PASSTHROUGH
+      httpsRedirect: true
     hosts:
-    - kibana.okstovall.com
+    - {{$.Values.ingress.elasticsearch.host}}
+    - {{$.Values.ingress.kibana.host}}
+    - {{$.Values.ingress.apm.host}}
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -23,16 +26,36 @@ metadata:
   namespace: {{$.Values.cluster.namespace}}
 spec:
   hosts:
-  - kibana.okstovall.com
+  - {{$.Values.ingress.elasticsearch.host}}
+  - {{$.Values.ingress.kibana.host}}
+  - {{$.Values.ingress.apm.host}}
   gateways:
   - elastic-gateway
   tls:
   - match:
     - port: 443
       sniHosts:
-      - kibana.okstovall.com
+      - {{$.Values.ingress.kibana.host}}
     route:
     - destination:
-        host: kibana-http.default.svc
+        host: {{$.Values.kibana.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
         port:
           number: 5601
+  - match:
+    - port: 443
+      sniHosts:
+      - {{$.Values.ingress.elasticsearch.host}}
+    route:
+    - destination:
+        host: {{$.Values.elasticsearch.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+        port:
+          number: 9200
+  - match:
+    - port: 443
+      sniHosts:
+      - {{$.Values.ingress.apm.host}}
+    route:
+    - destination:
+        host: {{$.Values.apm.services.http.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
+        port:
+          number: 8200

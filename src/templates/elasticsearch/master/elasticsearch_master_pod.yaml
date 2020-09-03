@@ -48,5 +48,5 @@ spec:
   volumes:
   - name: cert
     secret:
-      secretName: elasticsearch-cert
+      secretName: {{$.Values.cluster.certificates.certificate.secret_name}}
 {{- end}}

@@ -48,6 +48,8 @@ spec:
             value: {{ $.Values.cluster.name }}
           - name: ELASTIC_PASSWORD
             value: {{$.Values.sa.password}}
+          - name: discovery.seed_hosts
+            value: {{$.Values.elasticsearch.services.discovery.name}}.{{$.Values.cluster.namespace}}.svc.cluster.local
           {{- range .env}}        
           - name: {{.name}}
             value: '{{.value}}'
@@ -63,7 +65,7 @@ spec:
       volumes:
       - name: cert
         secret:
-          secretName: elasticsearch-cert
+          secretName: {{$.Values.cluster.certificates.certificate.secret_name}}
   {{if .storage }}
   volumeClaimTemplates:
     - metadata:

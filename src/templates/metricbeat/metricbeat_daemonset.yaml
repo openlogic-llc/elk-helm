@@ -43,8 +43,8 @@ spec:
       - name: metricbeat
         image: {{ .image }}:{{ $.Values.cluster.version }}
         args: [
-          "-c", "/etc/metricbeat.yml",
-          "-e",
+          "-c", 
+          "/etc/metricbeat.yml",
           "-system.hostfs=/hostfs",
         ]
         env:
@@ -86,7 +86,7 @@ spec:
       volumes:
       - name: cert
         secret:
-          secretName: elasticsearch-cert
+          secretName: {{$.Values.cluster.certificates.certificate.secret_name}}
       - name: proc
         hostPath:
           path: /proc

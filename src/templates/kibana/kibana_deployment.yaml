@@ -1,9 +1,13 @@
 {{- with $.Values.kibana }}
 apiVersion: apps/v1
-kind: ReplicaSet
+kind: Deployment
 metadata:
   name: {{ .labels.app }}-{{ .labels.role }}
   namespace: {{$.Values.cluster.namespace}}
+  labels:
+  {{- range $key, $value := .labels }}
+    {{ $key }}: '{{ $value }}'
+  {{- end}}
 spec:
   replicas: {{.replicas}}
   selector:
@@ -47,6 +51,8 @@ spec:
             value: {{$.Values.sa.username}}
           - name: ELASTICSEARCH_PASSWORD
             value: {{$.Values.sa.password}}
+          - name: ELASTICSEARCH_SSL_VERIFICATIONMODE
+            value: 'none'
           {{- range .env}}        
           - name: {{.name}}
             value: '{{.value}}'
@@ -58,5 +64,5 @@ spec:
       volumes:
       - name: cert
         secret:
-          secretName: elasticsearch-cert
+          secretName: {{$.Values.cluster.certificates.certificate.secret_name}}
 {{- end}}

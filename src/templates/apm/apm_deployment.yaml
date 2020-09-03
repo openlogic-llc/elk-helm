@@ -1,0 +1,65 @@
+{{- with $.Values.apm }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .labels.app }}-{{ .labels.role }}
+  namespace: {{$.Values.cluster.namespace}}
+  labels:
+  {{- range $key, $value := .labels }}
+    {{ $key }}: '{{ $value }}'
+  {{- end}}
+spec:
+  replicas: {{.replicas}}
+  selector:
+    matchLabels:
+    {{- range $key, $value := .labels }}
+      {{ $key }}: '{{ $value }}'
+    {{- end}}
+  template:
+    metadata:
+      labels:
+      {{- range $key, $value := .labels }}
+        {{ $key }}: '{{ $value }}'
+      {{- end}}
+    spec:
+      containers:
+        - name: {{ .labels.app }}-{{ .labels.role }}
+          image: {{ .image }}:{{$.Values.cluster.version}}
+          args: [
+          "-e"
+          ]
+          resources:
+          {{- with .resources }}
+            requests:
+            {{- range $key, $value := .requests }}
+              {{ $key }}: {{ quote $value }}
+            {{- end}}
+            limits:
+            {{- range $key, $value := .limits }}
+              {{ $key }}: {{ quote $value }}
+            {{- end}}
+          {{- end }}
+          env:
+          {{- range .env}}        
+          - name: {{.name}}
+            value: '{{.value}}'
+          {{- end}}
+          volumeMounts:
+          - name: cert
+            mountPath: /etc/pki/client/
+            readOnly: true
+          - name: config
+            mountPath: /usr/share/apm-server/apm-server.yml
+            readOnly: true
+            subPath: apm-server.yml
+      volumes:
+      - name: cert
+        secret:
+          secretName: {{$.Values.cluster.certificates.certificate.secret_name}}
+      - name: config
+        configMap:
+          name: apm-deployment-config
+          items:
+          - key: apm-server.yml
+            path: apm-server.yml
+{{- end}}

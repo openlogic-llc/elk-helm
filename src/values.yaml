@@ -1,3 +1,17 @@
+# sa.password = GtYFJDftCpe7kFAK
+# cluster.namespace = elk-helm
+# elasticsearch.master.storage.space = 25Gi
+# ingress.kibana.host = kibana.okstovall.com
+
+# ingress.kibana.host = ty-kibana.openlogic.io
+# cluster.certificate.issuer = 
+# cluster.certificate.cluster_issuer = letsencrypt-prod
+# kibana.services.http.name = https-kibana
+
+##TODO:
+## clean rough edges - check files for big comments and hard-coded values
+## deploy via rancher catalog rather than native helm
+
 
 sa:
   username: elastic
@@ -5,18 +19,27 @@ sa:
 
 ingress: 
   elasticsearch:
-    host: 
+    host: elastic.okstovall.com
   kibana:
-    host: 
+    host: kibana.okstovall.com
+  apm:
+    host: apm.okstovall.com
 
 cluster:
   name: sample-cluster
-  namespace: default
+  namespace: elk-helm
   version: 7.9.0
-  certificate:
-    issuer: selfsigned-issuer
-    cluster_issuer:
-
+  certificates:
+    certificate:
+      name: elasticsearch-cert
+      secret_name: elasticsearch-cert
+    ca_certificate:
+      name: elasticsearch-cert-ca
+      secret_name: elasticsearch-cert-ca
+      issuer_kind: ClusterIssuer
+      issuer_name: selfsigned-issuer
+    self_signed: true
+    
 elasticsearch:
   image: docker.elastic.co/elasticsearch/elasticsearch
   services:
@@ -56,18 +79,17 @@ elasticsearch:
     labels:
       app: elasticsearch
       role: master
+      k8s-app: elastic-elasticsearch
       elastic-master: true
       elastic-http: true
     storage:
       class: longhorn
-      space: 50Gi
+      space: 25Gi
     env:
     - name: ES_JAVA_OPTS
-      value: -Xms1g -Xmx1g
+      value: -Xms1500m -Xmx1500m
     - name: xpack.license.self_generated.type
       value: basic
-    - name: discovery.seed_hosts
-      value: elasticsearch-discovery-service
     - name: cluster.initial_master_nodes
       value: elasticsearch-master
     - name: xpack.security.enabled
@@ -123,6 +145,7 @@ kibana:
   labels:
     app: elasticsearch
     role: kibana
+    k8s-app: elastic-kibana
   resources:
     requests:
       memory: 1Gi
@@ -152,6 +175,24 @@ kibana:
   - name: ELASTICSEARCH_SSL_CERTIFICATEAUTHORITIES
     value: /usr/share/kibana/config/certificates/ca.crt
 
+apm:
+  name: apm
+  image: docker.elastic.co/apm/apm-server
+  token: FAKE_APM_TOKEN
+  labels:
+    app: elasticsearch
+    role: apm
+    k8s-app: elastic-apm
+  services:
+    http:
+      name: apm-http
+      selector:
+        app: elasticsearch
+        role: apm
+      ports:
+      - name: https
+        port: 8200
+        targetPort: 8200
 filebeat:
   name: filebeat
   image: docker.elastic.co/beats/filebeat

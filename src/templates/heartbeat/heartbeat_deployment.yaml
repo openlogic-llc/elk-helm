@@ -38,8 +38,8 @@ spec:
       - name: {{.name}}
         image: {{ .image }}:{{ $.Values.cluster.version }}
         args: [
-          "-c", "/etc/heartbeat.yml",
-          "-e"
+          "-c", 
+          "/etc/heartbeat.yml",
         ]
         env:
         - name: NODE_NAME
@@ -72,7 +72,7 @@ spec:
       volumes:
       - name: cert
         secret:
-          secretName: elasticsearch-cert
+          secretName: {{$.Values.cluster.certificates.certificate.secret_name}}
       - name: config
         configMap:
           defaultMode: 0600
