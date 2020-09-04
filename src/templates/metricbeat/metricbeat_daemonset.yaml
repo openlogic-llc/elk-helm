@@ -22,15 +22,6 @@ spec:
         co.elastic.metrics/metricsets: state,stats
         co.elastic.metrics/username: {{ $.Values.sa.username }}
         co.elastic.metrics/password: {{ $.Values.sa.password }}
-        
-
-
-        # co.elastic.monitor/type: "http"
-        # co.elastic.monitor/id: ${pod.name}
-        # co.elastic.monitor/name: {{ .name }}
-        # co.elastic.monitor/schedule: "@every 5s"
-        # co.elastic.monitor/hosts: "http://${data.host}:9001/state"
-        # co.elastic.monitor/check.response.status: "200"
       labels:
         k8s-app: metricbeat
         app: elasticsearch
